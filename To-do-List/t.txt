@@ -1,0 +1,6 @@
+The project was not built since its build path is incomplete. 
+Cannot find the class file for java.util.AbstractList. Fix the build path then try building this project
+
+0412283e-f733-40bc-8b37-fd913df93bec
+0412283e-f733-40bc-8b37-fd913df93bec
+0412283e-f733-40bc-8b37-fd913df93bec
