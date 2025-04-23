@@ -10,21 +10,21 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.token.TokenService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.jwt.course.springsecurityjwt.repository.UserRepository;
+import com.jwt.course.springsecurityjwt.service.TokenService;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
 
     @Autowired
-    TokenService tokenService;
+    private TokenService tokenService;
 
     @Autowired
-    UserRepository repo;
+    private UserRepository repository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -33,7 +33,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         var token = recoverToken(request);
         if (token != null) {
             var login = tokenService.validate(token);
-            UserDetails user = repo.findByLogin(login);
+            UserDetails user = repository.findByLogin(login);
 
             var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -50,13 +50,4 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         return authHeader.replace("Bearer ", "");
     }
-
-    @Override
-    protected void doFilterInternal(javax.servlet.http.HttpServletRequest request,
-            javax.servlet.http.HttpServletResponse response, javax.servlet.FilterChain filterChain)
-            throws javax.servlet.ServletException, IOException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'doFilterInternal'");
-    }
-
 }
